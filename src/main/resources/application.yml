@@ -1,0 +1,96 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: multi-agent-office
+  datasource:
+    url: jdbc:mysql://localhost:3306/agent_office?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      connection-timeout: 20000
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+# JWT
+jwt:
+  secret: RgIQV0gt2bsiyLblLWswGz/8cobZUh1L6pS771p4ipQ=
+  expiration: 86400000  # 24 hours
+  refresh-expiration: 604800000  # 7 days
+
+# LLM Providers
+llm:
+  default-provider: deepseek
+  cache:
+    enabled: true
+    ttl-seconds: 3600
+    max-size: 10000
+  providers:
+    openai:
+      api-key: ENC(encrypted_key)
+      base-url: https://api.openai.com/v1
+      default-model: gpt-4
+    anthropic:
+      api-key: ENC(encrypted_key)
+      base-url: https://api.anthropic.com/v1
+      default-model: claude-sonnet-4-6
+    deepseek:
+      api-key: ${DEEPSEEK_API_KEY:}
+      base-url: https://api.deepseek.com/v1
+      default-model: deepseek-v4-flash
+
+# Agent Thread Pool
+agent:
+  thread-pool:
+    core-size: 10
+    max-size: 50
+    queue-capacity: 200
+    keep-alive-seconds: 60
+
+# Task
+task:
+  default-timeout-seconds: 300
+  max-retry: 3
+  retry-backoff-ms: 1000
+  max-sub-tasks: 20
+
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Knife4j API Doc (accessible at /doc.html)
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+# Alert
+alert:
+  webhook-url: ""
+  token-budget-warn-percent: 80
+  queue-backlog-threshold: 50
