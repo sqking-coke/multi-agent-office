@@ -1,7 +1,7 @@
 # multi-agent-office - 学习指南
 
-多 Agent 协同办公系统 —— Java 原生多智能体协同办公 AI 中台，完整学习路线与深度解析。
-
+> **项目地址**：https://github.com/sqking-coke/multi-agent-office <br>
+> **适用对象**：Java 后端开发者，具备 Spring Boot 基础，想深入学习 AI Agent 架构设计
 ---
 
 ## 目录
