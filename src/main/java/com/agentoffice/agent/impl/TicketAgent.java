@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 工单处理 Agent：对用户提交的工单进行分类、紧急程度评估并提供处理建议或自动回复。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -113,6 +116,7 @@ public class TicketAgent implements BizAgent {
         return true;
     }
 
+    /** 构建发给 LLM 的工单分析指令 Prompt。 */
     private String buildPrompt(String content, Map<String, Object> globalContext) {
         return """
                 工单内容：
@@ -123,6 +127,7 @@ public class TicketAgent implements BizAgent {
                 """.formatted(content);
     }
 
+    /** 从 LLM 原始输出中提取 JSON，兼容 Markdown 代码块包裹。 */
     private JSONObject parseResult(String llmResult) {
         try {
             String json = llmResult.trim();

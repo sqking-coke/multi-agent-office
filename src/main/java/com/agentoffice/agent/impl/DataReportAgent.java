@@ -15,6 +15,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 数据报告 Agent：对原始数据进行分析，汇总关键指标、识别趋势与异常、生成优化建议。
+ * 输出结构化的 JSON 分析报告。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -118,6 +122,7 @@ public class DataReportAgent implements BizAgent {
         return true;
     }
 
+    /** 从 LLM 原始输出中提取 JSON，兼容 Markdown 代码块包裹。 */
     private JSONObject parseResult(String llmResult) {
         try {
             String json = llmResult.trim();

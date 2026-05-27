@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.Executors;
 
+/**
+ * Guava AsyncEventBus 配置：4 守护线程的异步事件总线，用于 Agent 任务生命周期事件的发布与消费。
+ */
 @Configuration
 public class EventBusConfig {
 

@@ -19,6 +19,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * JWT 认证过滤器：从请求头提取 Bearer Token，校验后设置 SecurityContext 和租户上下文。
+ * 每个请求执行一次（OncePerRequestFilter），finally 块确保 TenantContext 清理。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -53,6 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
+    /** 从 Authorization 请求头提取 Bearer Token。 */
     private String extractToken(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {

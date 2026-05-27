@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * 串行协作策略：子任务按顺序依次执行，上一步结果通过 GlobalContext 传递给下一步，任一步失败即中止后续。
+ */
 @Slf4j
 @Component
 public class SerialStrategy implements CollaborationStrategy {

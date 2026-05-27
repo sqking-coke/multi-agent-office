@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * RAG 智能答疑 Agent：检索知识库文档并结合 LLM 回答用户问题，引用知识来源并提供置信度。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -154,6 +157,7 @@ public class RagQaAgent implements BizAgent {
                 .collect(Collectors.joining("\n\n---\n\n"));
     }
 
+    /** 简单关键词分词匹配：问题分词后任一长度≥2的词命中文档内容即视为相关。 */
     private boolean containsAnyKeyword(String doc, String question) {
         // Simple keyword overlap
         String[] words = question.split("[\\s，,。.!！?？]+");
@@ -165,6 +169,7 @@ public class RagQaAgent implements BizAgent {
         return false;
     }
 
+    /** 从 LLM 原始输出中提取 JSON，兼容 Markdown 代码块包裹。 */
     private JSONObject parseResult(String llmResult) {
         try {
             String json = llmResult.trim();

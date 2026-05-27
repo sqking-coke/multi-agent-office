@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.*;
 
+/**
+ * Agent 执行线程池配置：核心 10、最大 50、有界队列 200，CallerRunsPolicy 拒绝策略。
+ */
 @Configuration
 public class ThreadPoolConfig {
 

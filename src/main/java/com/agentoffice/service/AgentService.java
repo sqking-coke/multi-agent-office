@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+/**
+ * Agent 管理服务：负责 Agent 的注册、查询、更新、注销、启停和运行指标聚合。
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

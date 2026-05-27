@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Prompt 模板服务：模板的创建、版本激活（同时停用旧版本）和历史版本回滚。
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

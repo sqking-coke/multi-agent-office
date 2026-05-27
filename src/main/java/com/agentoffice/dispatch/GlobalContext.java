@@ -27,6 +27,7 @@ public class GlobalContext {
         timestamps.put(taskId, System.currentTimeMillis());
     }
 
+    /** 线程安全写入（写锁保护）。 */
     public void put(String taskId, String key, Object value) {
         var lock = getLock(taskId);
         lock.writeLock().lock();
@@ -37,6 +38,7 @@ public class GlobalContext {
         }
     }
 
+    /** 线程安全读取（读锁保护）。 */
     @SuppressWarnings("unchecked")
     public <T> T get(String taskId, String key) {
         var lock = getLock(taskId);
@@ -49,6 +51,7 @@ public class GlobalContext {
         }
     }
 
+    /** 批量写入（写锁保护）。 */
     public void putAll(String taskId, java.util.Map<String, Object> data) {
         var lock = getLock(taskId);
         lock.writeLock().lock();
@@ -59,6 +62,7 @@ public class GlobalContext {
         }
     }
 
+    /** 批量读取，返回快照副本（读锁保护）。 */
     public java.util.Map<String, Object> getAll(String taskId) {
         var lock = getLock(taskId);
         lock.readLock().lock();
@@ -70,6 +74,7 @@ public class GlobalContext {
         }
     }
 
+    /** 清理指定任务的上下文数据、时间戳与锁。 */
     public void removeTask(String taskId) {
         var lock = getLock(taskId);
         lock.writeLock().lock();

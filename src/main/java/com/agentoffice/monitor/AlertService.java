@@ -10,6 +10,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
+/**
+ * 告警服务：通过 Webhook（如企业微信/钉钉）发送分级告警通知。
+ * 未配置 webhook-url 时降级为日志输出。
+ */
 @Slf4j
 @Component
 public class AlertService {
@@ -24,6 +28,7 @@ public class AlertService {
                 .build();
     }
 
+    /** 发送告警：webhook 未配置时降级为日志 Warn 输出。 */
     public void sendAlert(String title, String content, String level) {
         if (webhookUrl == null || webhookUrl.isEmpty()) {
             log.warn("[ALERT] {} ({}): {}", title, level, content);

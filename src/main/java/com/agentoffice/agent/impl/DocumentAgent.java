@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 文档处理 Agent：根据用户指令对文档内容进行总结、要点提取、改写或格式规整。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -114,12 +117,14 @@ public class DocumentAgent implements BizAgent {
         return true;
     }
 
+    /** 从全局上下文中推断文档处理操作类型，默认"总结"。 */
     private String inferOperation(Map<String, Object> globalContext) {
         String op = (String) globalContext.get("docOperation");
         if (op != null) return op;
         return "总结";
     }
 
+    /** 从 LLM 原始输出中提取 JSON，兼容 Markdown 代码块包裹。 */
     private JSONObject parseResult(String llmResult) {
         try {
             String json = llmResult.trim();

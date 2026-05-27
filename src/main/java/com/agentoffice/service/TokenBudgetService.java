@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+/**
+ * Token 预算服务：检查 Agent 当日 Token 消耗是否超出预算，触发分级告警（80% 预警 / 100% 熔断）。
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

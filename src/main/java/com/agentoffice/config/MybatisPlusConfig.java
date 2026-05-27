@@ -11,6 +11,10 @@ import net.sf.jsqlparser.expression.LongValue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * MyBatis-Plus 配置：注册多租户 SQL 拦截器和 MySQL 分页插件。
+ * 租户拦截器自动在 SQL 中追加 tenant_id 条件（排除系统表如 sys_role / sys_permission 等）。
+ */
 @Configuration
 public class MybatisPlusConfig {
 

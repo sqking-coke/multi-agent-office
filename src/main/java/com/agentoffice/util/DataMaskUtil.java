@@ -2,6 +2,9 @@ package com.agentoffice.util;
 
 import java.util.regex.Pattern;
 
+/**
+ * 数据脱敏工具：对手机号、邮箱、身份证、IP 地址进行掩码处理。
+ */
 public class DataMaskUtil {
     private static final Pattern PHONE = Pattern.compile("(1[3-9]\\d)\\d{4}(\\d{4})");
     private static final Pattern EMAIL = Pattern.compile("(\\w{2})[^@]*(@.*)");
@@ -24,6 +27,7 @@ public class DataMaskUtil {
         return IP.matcher(text).replaceAll("$1.*.$2");
     }
 
+    /** 链式脱敏：依次对手机号、邮箱、身份证、IP 进行掩码处理。 */
     public static String mask(String text) {
         if (text == null) return null;
         text = maskPhone(text);

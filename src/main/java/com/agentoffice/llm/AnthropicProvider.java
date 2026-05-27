@@ -14,6 +14,10 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Anthropic Claude API 适配器，实现 Messages API 的同步补全和流式补全。
+ * 不支持 Embeddings API（Anthropic 无此能力）。
+ */
 @Slf4j
 public class AnthropicProvider implements LLMProvider {
 

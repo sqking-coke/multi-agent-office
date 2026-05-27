@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 代码审查 Agent：对提交的代码进行多维度审查，包括规范、BUG、性能、安全，输出评分和修复建议。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -138,6 +141,7 @@ public class CodeReviewAgent implements BizAgent {
         return true;
     }
 
+    /** 基于代码内容关键词启发式检测编程语言。 */
     private String detectLanguage(String content) {
         if (content == null) return "unknown";
         if (content.contains("public class") || content.contains("import java")) return "java";
@@ -147,10 +151,12 @@ public class CodeReviewAgent implements BizAgent {
         return "unknown";
     }
 
+    /** 构建代码审查 Prompt，附带检测到的语言标签。 */
     private String buildPrompt(String content, String language) {
         return "语言：" + language + "\n\n代码：\n" + content;
     }
 
+    /** 从 LLM 原始输出中提取 JSON，兼容 Markdown 代码块包裹。 */
     private JSONObject parseResult(String llmResult) {
         try {
             String json = llmResult.trim();

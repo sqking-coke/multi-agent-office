@@ -7,6 +7,10 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Agent 事件基类，定义事件通用字段（类型、traceId、taskId、时间戳）。
+ * 子类对应任务生命周期的各阶段事件。
+ */
 @Getter
 @ToString
 @AllArgsConstructor
@@ -20,6 +24,7 @@ public class AgentEvent {
         return new AgentEvent(type, traceId, taskId, LocalDateTime.now());
     }
 
+    /** 任务拆解完成事件，携带子任务内容列表和协同模式。 */
     @Getter
     @ToString(callSuper = true)
     public static class TaskDecomposed extends AgentEvent {
@@ -33,6 +38,7 @@ public class AgentEvent {
         }
     }
 
+    /** 子任务分发事件，携带目标 Agent 编码。 */
     @Getter
     @ToString(callSuper = true)
     public static class TaskDispatched extends AgentEvent {
@@ -44,6 +50,7 @@ public class AgentEvent {
         }
     }
 
+    /** 子任务执行成功事件，携带子任务 ID 和结果摘要。 */
     @Getter
     @ToString(callSuper = true)
     public static class TaskCompleted extends AgentEvent {
@@ -59,6 +66,7 @@ public class AgentEvent {
         }
     }
 
+    /** 子任务执行失败事件，携带错误信息。 */
     @Getter
     @ToString(callSuper = true)
     public static class TaskFailed extends AgentEvent {
@@ -74,6 +82,7 @@ public class AgentEvent {
         }
     }
 
+    /** 全局上下文更新事件，携带变更的 key。 */
     @Getter
     @ToString(callSuper = true)
     public static class ContextUpdated extends AgentEvent {
@@ -85,6 +94,7 @@ public class AgentEvent {
         }
     }
 
+    /** 需要人工审批事件，携带子任务 ID 和 Agent 编码。 */
     @Getter
     @ToString(callSuper = true)
     public static class ApprovalRequired extends AgentEvent {
@@ -98,6 +108,7 @@ public class AgentEvent {
         }
     }
 
+    /** 审批完成事件，携带审批结果（通过/驳回）。 */
     @Getter
     @ToString(callSuper = true)
     public static class ApprovalResolved extends AgentEvent {

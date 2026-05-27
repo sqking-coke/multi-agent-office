@@ -53,6 +53,7 @@ public class LLMService {
         log.info("LLMService initialized — default provider: {}", defaultProvider);
     }
 
+    /** LLM 补全：Token 预算检查 → 缓存查询 → 提供商路由 → 结果缓存 → Token 统计。 */
     public String completion(String systemPrompt, String userPrompt, String model, String agentCode) {
         TokenBudgetService.BudgetStatus budgetStatus = tokenBudgetService.checkBudget(agentCode);
         if (budgetStatus == TokenBudgetService.BudgetStatus.BREAK_100) {
@@ -95,6 +96,7 @@ public class LLMService {
         return resolveProvider(model).embed(text, model);
     }
 
+    /** 根据模型名关键词路由到对应提供商，默认使用 openAIProvider。 */
     private LLMProvider resolveProvider(String model) {
         if (model != null && model.toLowerCase().contains("claude")) {
             return anthropicProvider;
@@ -111,6 +113,7 @@ public class LLMService {
         return openAIProvider;
     }
 
+    /** 记录每日 LLM Token 消耗统计，新建或累加当日记录（按 agent + model + 日期唯一）。 */
     private void recordTokenStat(String agentCode, String model, int promptTokens,
                                   int completionTokens, int callCount, boolean cacheHit) {
         try {
@@ -148,6 +151,7 @@ public class LLMService {
         }
     }
 
+    /** 粗略估算 LLM 调用成本（USD），按各模型每千 Token 定价计算。 */
     private BigDecimal estimateCost(String model, int promptTokens, int completionTokens) {
         // Rough pricing estimates (per 1K tokens, USD)
         double promptPrice = 0.03;

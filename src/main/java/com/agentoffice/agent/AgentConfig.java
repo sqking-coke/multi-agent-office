@@ -3,6 +3,7 @@ package com.agentoffice.agent;
 import lombok.Builder;
 import lombok.Data;
 
+/** Agent 运行时配置参数对象：模型、温度、Token 预算、重试策略、并发限制等。 */
 @Data
 @Builder
 public class AgentConfig {

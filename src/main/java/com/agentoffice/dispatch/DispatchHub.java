@@ -20,6 +20,10 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
+/**
+ * 多 Agent 协同调度中枢，负责任务的拆解、分发、协同执行与结果聚合。
+ * 支持 PARALLEL / SERIAL / RELAY / CONDITION / LOOP 五种协作策略。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -117,6 +121,7 @@ public class DispatchHub {
         return task;
     }
 
+    /** 将拆解后的子任务持久化为 AgentTaskItem 记录，并发布 TaskDispatched 事件。 */
     private List<AgentTaskItem> createSubTaskItems(Long taskId, DecomposeResult result, Long tenantId, String traceId) {
         List<AgentTaskItem> items = new ArrayList<>();
         Set<String> dispatchedAgents = new HashSet<>();
@@ -141,6 +146,7 @@ public class DispatchHub {
         return items;
     }
 
+    /** 将各 Agent 执行结果写回子任务记录，并发布 TaskCompleted / TaskFailed 事件。 */
     private void updateSubTaskResults(List<AgentTaskItem> items,
                                        Map<Integer, BizAgent.AgentResult> results,
                                        DecomposeResult decomposeResult, String traceId) {
@@ -170,6 +176,7 @@ public class DispatchHub {
         }
     }
 
+    /** 汇总所有子任务执行结果为 Markdown 格式协同执行报告。 */
     private String aggregateResults(String taskName,
                                      Map<Integer, BizAgent.AgentResult> results,
                                      DecomposeResult decomposeResult) {
@@ -199,12 +206,14 @@ public class DispatchHub {
         return sb.toString();
     }
 
+    /** 根据子任务执行结果判定主任务最终状态：全部成功=1，全部失败=2，部分成功=1。 */
     private int determineFinalStatus(Map<Integer, BizAgent.AgentResult> results) {
         boolean allSuccess = results.values().stream().allMatch(BizAgent.AgentResult::isSuccess);
         boolean anyFailed = results.values().stream().anyMatch(r -> !r.isSuccess());
         return allSuccess ? 1 : (anyFailed && results.values().stream().noneMatch(BizAgent.AgentResult::isSuccess) ? 2 : 1);
     }
 
+    /** 取消运行中的任务（仅 PENDING 状态可取消）。 */
     public void cancelTask(Long taskId) {
         AgentTask task = taskMapper.selectById(taskId);
         if (task != null && task.getTaskStatus() == 0) {

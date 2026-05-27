@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * 混合任务拆分器：优先基于规则模板匹配，无匹配时降级为 LLM 拆解或默认单任务拆解。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -87,6 +90,7 @@ public class TaskDecomposer {
         }
     }
 
+    /** DAG 校验：子任务数量范围(1-20)、能力标签存在性、依赖关系合法性。 */
     private String validateDecomposition(List<DecomposedTask> tasks) {
         if (tasks.isEmpty() || tasks.size() > 20) {
             return "Task count out of range (1-20): " + tasks.size();
@@ -109,6 +113,7 @@ public class TaskDecomposer {
         return null; // valid
     }
 
+    /** 无模板匹配时的降级拆解：将整个任务作为单个子任务，串行模式执行。 */
     private DecomposeResult buildDefaultDecomposition(String taskName, String taskContent) {
         DecomposedTask dt = new DecomposedTask();
         dt.setName(taskName);
@@ -118,6 +123,7 @@ public class TaskDecomposer {
         return new DecomposeResult(Collections.singletonList(dt), "SERIAL", "default");
     }
 
+    /** 从 DB 模板 JSON 反序列化为 DecomposedTask 列表。 */
     private DecomposeResult buildFromTemplate(TaskDecomposeTemplate template) {
         JSONArray arr = JSON.parseArray(template.getSubTasksJson());
         List<DecomposedTask> tasks = new ArrayList<>();
@@ -133,6 +139,7 @@ public class TaskDecomposer {
         return new DecomposeResult(tasks, template.getCoopMode(), "template:" + template.getTemplateName());
     }
 
+    /** 逗号分隔关键词任意匹配（忽略前后空白）。 */
     private boolean matchesKeywords(String text, String keywords) {
         if (keywords == null || keywords.isEmpty()) return false;
         String[] parts = keywords.split(",");

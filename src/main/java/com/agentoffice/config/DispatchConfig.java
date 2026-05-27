@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * 调度初始化配置：启动时注册全部协作策略到 DispatchHub，并从数据库加载已启用的 Agent 配置。
+ */
 @Slf4j
 @Configuration
 @RequiredArgsConstructor

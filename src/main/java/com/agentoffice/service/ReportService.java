@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 报表服务：统计报表和 Token 消耗记录的查询与写入。
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

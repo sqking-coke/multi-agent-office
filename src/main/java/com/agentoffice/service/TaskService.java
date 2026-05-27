@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 任务服务：提交协同任务、分页查询、取消、子任务人工审批（通过/驳回）。
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 审批服务：创建审批记录，支持通过/驳回操作，查询待审批列表。
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

@@ -14,6 +14,10 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * OpenAI 兼容 API 适配器，支持 Chat Completions、Streaming 和 Embeddings。
+ * 同时用于 DeepSeek 等兼容 OpenAI 接口格式的模型。
+ */
 @Slf4j
 public class OpenAIProvider implements LLMProvider {
 

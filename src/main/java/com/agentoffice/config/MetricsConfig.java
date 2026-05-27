@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Micrometer 指标配置：注册 Agent 任务计数、错误计数、耗时分布和 LLM Token 消耗等 Prometheus 指标。
+ */
 @Configuration
 public class MetricsConfig {
 

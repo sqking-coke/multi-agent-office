@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * 并行协作策略：所有子任务同时分发给各自 Agent 执行，通过 CountDownLatch 等待全部完成。
+ */
 @Slf4j
 @Component
 public class ParallelStrategy implements CollaborationStrategy {
